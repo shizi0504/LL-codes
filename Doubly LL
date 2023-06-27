@@ -1,0 +1,233 @@
+# include <bits/stdc++.h>
+using namespace std ;
+
+class ListNode
+{
+    public :
+        int value ;
+        ListNode* prev ;
+        ListNode* next ;
+        
+    ListNode(int x)
+    {
+        value = x ;
+        prev = nullptr ;
+        next = nullptr ;
+    }
+};
+
+ListNode* head = nullptr ;
+int len = 0 ;
+
+void printList(ListNode* &head)
+{
+    ListNode* temp = head ;
+    while(temp != nullptr)
+    {
+        cout<<temp -> value<<" --> ";
+        temp = temp -> next ;
+    }
+    cout<<"null "<<endl ;
+}
+
+void insertAtbegin(ListNode* &head, int value)
+{
+    ListNode* curr = new ListNode(value);
+    if(head == nullptr)
+    {
+        head = curr ;
+        curr -> prev = nullptr ;
+        curr -> next = nullptr ;
+    }
+    else
+    {
+        curr -> prev = nullptr ;
+        curr -> next = head ;
+        head -> prev = curr ;
+        head = curr ;
+    }
+    ++len ;
+}
+
+void insertAtend(ListNode* &head, int value)
+{
+    ListNode* newnode = new ListNode(value);
+    if(head == nullptr)
+    {
+        head = newnode ;
+        newnode -> prev = nullptr ;
+        newnode -> next = nullptr ;
+    }
+    else
+    {
+        ListNode* prev1 = nullptr ;
+        ListNode* curr = head ;
+        while(curr != nullptr)
+        {
+            prev1 = curr ;
+            curr = curr -> next ;
+        }
+        curr = newnode ;
+        prev1 -> next = curr ;
+        curr -> prev = prev1 ;
+        
+    }
+    ++len ;
+}
+
+void insertAtpost(ListNode* &head, int value, int position)
+{
+    ListNode* newnode = new ListNode(value) ;
+    if(position == 1)
+    {
+        insertAtbegin(head, value);
+        return ;
+    }
+    if(position == len)
+    {
+        insertAtend(head, value);
+        return ;
+    }
+    else
+    {
+        int cnt = 1 ;
+        ListNode* prev2 = nullptr ;
+        ListNode* curr2 = head ;
+        while(cnt < position)
+        {
+            ++cnt ;
+            prev2 = curr2 ;
+            curr2 = curr2 -> next ;
+        }
+        prev2 -> next = newnode ;
+        newnode -> next = curr2 ;
+        curr2 -> prev = newnode ;
+        newnode -> prev = prev2 ;
+    }
+    ++len ;
+}
+
+void deleteAtbegin(ListNode* &head)
+{
+    ListNode* temp = head ;
+    if(head == nullptr)
+    {
+        cout<<"No nodes to delete"<<endl ;
+        return ;
+    }
+    else
+    {
+        head = head -> next ;
+        head -> prev = nullptr ;
+        temp -> next = nullptr ;
+        delete temp ;
+    }
+    --len ;
+}
+
+void deleteAtend(ListNode* &head)
+{
+    if(head == nullptr)
+    {
+        cout<<"No nodes to delte"<<endl ;
+        return ;
+    }
+    ListNode* p1 = nullptr ;
+    ListNode* c1 = head ;
+    while(c1 -> next != nullptr)
+    {
+        p1 = c1 ;
+        c1 = c1 -> next ;
+    }
+    ListNode* temp = c1 ;
+    p1 -> next = nullptr ;
+    c1 -> prev = nullptr ;
+    delete temp ;
+    --len ;
+}
+
+void deleteAtpos(ListNode* &head, int position)
+{
+    if(position == 1)
+    {
+        deleteAtbegin(head);
+        return ;
+    }
+    if(position == len)
+    {
+        deleteAtend(head);
+        return ;
+    }
+    else
+    {
+        int cnt = 1 ;
+        ListNode* p1 = nullptr ;
+        ListNode* c1 = head ;
+        while(cnt < position)
+        {
+            ++cnt ;
+            p1 = c1 ;
+            c1 = c1 -> next ;
+        }
+        ListNode* tmp = c1 ;
+        p1 -> next = c1 -> next ;
+        c1 -> prev = nullptr ;
+        c1 -> next = nullptr ;
+        c1 -> next -> prev = p1 ;
+        delete tmp ;
+    }
+}
+
+int main()
+{
+    ListNode* newnode = new ListNode(20);
+    newnode -> prev = nullptr ;
+    newnode -> next = nullptr ;
+    head = newnode ;
+    ++len ;
+    printList(head);
+    
+    int newval ;
+    cout<<"Enter the value to be inserted in the beginning: ";
+    cin>>newval ;
+    insertAtbegin(head, newval);
+    insertAtbegin(head, 30);
+    cout<<"DLL after insertion in the beginning : "<<endl ;
+    printList(head);
+    
+    cout<<"Enter the value to be inserted at the end : ";
+    cin>>newval ;
+    insertAtend(head, newval);
+    insertAtend(head, 50);
+    insertAtend(head, 100);
+    cout<<"DLL after insertion at the end: "<<endl ;
+    printList(head);
+    
+    cout<<"Length of the DLL is: "<<len<<endl ;
+    
+    int post ;
+    cout<<"Enter the value to be inserted : ";
+    cin>>newval ;
+    cout<<"Enter the position at which you want to insert: ";
+    cin>>post ;
+    insertAtpost(head, newval, post);
+    cout<<"Modified DLL is: "<<endl ;
+    printList(head);
+    
+    cout<<"Length of the DLL is: "<<len<<endl ;
+    
+    deleteAtbegin(head);
+    cout<<"DLL after deletion of head: "<<endl ;
+    printList(head);
+    
+    deleteAtend(head);
+    cout<<"DLL after deletion at tail: "<<endl ;
+    printList(head);
+    
+    cout<<"Enter the position of the node you want to delete: ";
+    cin>>post ;
+    deleteAtpos(head, post);
+    cout<<"DLL after deletion: "<<endl ;
+    printList(head);
+    return 0 ;
+}
