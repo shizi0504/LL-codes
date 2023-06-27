@@ -1,0 +1,209 @@
+#include <bits/stdc++.h>
+using namespace std ;
+
+class ListNode
+{
+    public :
+        int value ;
+        ListNode* next ;
+        
+    ListNode(int x)
+    {
+        value = x ;
+        next = nullptr ;
+    }
+};
+
+ListNode* head = nullptr ;
+int len = 0 ; 
+
+void printList(ListNode* &head)
+{
+    ListNode* temp = head ;
+    while(temp != nullptr)
+    {
+        cout<<temp -> value<<" --> ";
+        temp = temp -> next ;
+    }
+    cout<<"null"<<endl ;
+}
+
+void insertAtbegin(ListNode* &head, int value)
+{
+    ListNode* curr = new ListNode(value);
+    if(head == nullptr)
+    {
+        head = curr ;
+        curr -> next = nullptr ;
+    }
+    else
+    {
+        curr -> next = head ;
+        head = curr ;
+    }
+    ++len ;
+}
+
+void insertAtend(ListNode* &head, int value)
+{
+    ListNode* curr = new ListNode(value) ;
+    if(head == nullptr)
+    {
+        head = curr ;
+        curr -> next = nullptr ;
+    }
+    else
+    {
+    ListNode* temp = head ;
+    while(temp -> next != nullptr)
+    {
+        temp = temp -> next ;
+    }
+    temp -> next = curr ;
+    }
+    ++len ;
+}
+
+void deleteAtbegin(ListNode* &head)
+{
+    if(head == nullptr)
+    {
+        cout<<"No nodes to delete in the LL";
+        
+    }
+    else
+    {
+        ListNode* temp = head ;
+        head = temp -> next ;
+        temp -> next = nullptr ;
+        delete temp ;
+    }
+    --len ;
+}
+
+void deleteAtend(ListNode* &head)
+{
+    if(head == nullptr)
+    {
+        cout<<"No nodes to delete in the LL";
+    
+    }
+    if(head -> next == nullptr)
+    {
+        delete head ;
+        head -> next = nullptr ;
+    }
+    else
+    {
+        ListNode* prev = nullptr ;
+        ListNode* curr = head ;
+    
+        while(curr -> next != nullptr)
+        {
+            prev = curr ;
+            curr = curr -> next ;
+        }
+        prev -> next = nullptr ;
+        delete curr ;
+        
+    }
+    --len ;
+}
+
+void deleteAtpos(ListNode* &head, int position)
+{
+    if(position == 1)
+    {
+        deleteAtbegin(head);
+        return ;
+    }
+    else if(len == position)
+    {
+        deleteAtend(head);
+        return ;
+    }
+    ListNode* prev = nullptr ;
+    ListNode* curr = head ;
+    int cnt = 1 ;
+    while(cnt < position)
+    {
+        prev = curr ;
+        curr = curr -> next ;
+        ++cnt ;
+    }
+    ListNode* tmp = curr ;
+    prev -> next = curr ->next ;
+    curr -> next = nullptr ;
+    delete tmp ;
+    --len ;
+}
+
+bool searchKey(ListNode* &head, int key)
+{
+    ListNode* curr = head ;
+    while(curr != nullptr)
+    {
+        if(curr -> value == key)
+            return "true" ;
+        curr = curr -> next ;
+    }
+    return "false" ;
+}
+
+int main()
+{
+    ListNode* temp = new ListNode(11) ;
+    ++len ;
+    head = temp ;
+    printList(head) ;
+    
+    int newval ;
+    
+    cout<<"Enter the value you want to insert: ";
+    cin>>newval ;
+    
+    insertAtbegin(head, newval);
+    insertAtbegin(head, 33);
+    insertAtbegin(head, 88);
+    insertAtbegin(head, 100);
+    cout<<endl ;
+    cout<<"LL after insertion in the beginning: "<<endl;
+    printList(head);
+    
+    cout<<"Enter the value you want to insert at the end of the LL: ";
+    cin>>newval ;
+    insertAtend(head, newval);
+    insertAtend(head, 55);
+    insertAtend(head, 66);
+    insertAtend(head, 77);
+    insertAtend(head, 1221);
+    cout<<"LL after insertion at the end: "<<endl ;
+    printList(head);
+    
+    deleteAtbegin(head) ;
+    deleteAtbegin(head);
+    cout<<"LL after deleting head: "<<endl ;
+    printList(head);
+    
+    deleteAtend(head);
+    deleteAtend(head);
+    cout<<"LL after deleting tail: "<<endl ;
+    printList(head);
+    cout<<"The length of the LL is: "<<len<<endl ;
+    
+    int post ;
+    cout<<"Enter the position of the node you want to delete: " ;
+    cin>>post ;
+    
+    deleteAtpos(head, post);
+    cout<<"LL after deleting the required node: "<<endl ;
+    printList(head);
+    
+    
+    
+    int key ;
+    cout<<"Enter the value you want to search for in the LL: " ;
+    cin>>key ;
+    cout<<searchKey(head, key)<<endl ;
+    return 0 ;
+}
