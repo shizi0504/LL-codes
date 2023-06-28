@@ -7,7 +7,7 @@ class ListNode
         int value ;
         ListNode* prev ;
         ListNode* next ;
-        
+
     ListNode(int x)
     {
         value = x ;
@@ -70,7 +70,7 @@ void insertAtend(ListNode* &head, int value)
         curr = newnode ;
         prev1 -> next = curr ;
         curr -> prev = prev1 ;
-        
+
     }
     ++len ;
 }
@@ -153,30 +153,26 @@ void deleteAtpos(ListNode* &head, int position)
         deleteAtbegin(head);
         return ;
     }
-    if(position == len)
+    if(len == position)
     {
         deleteAtend(head);
         return ;
     }
-    else
+    int cnt = 1 ;
+    ListNode* t1 = nullptr ;
+    ListNode* t2 = head ;
+    while(cnt < position)
     {
-        int cnt = 1 ;
-        ListNode* p1 = nullptr ;
-        ListNode* c1 = head ;
-        while(cnt < position)
-        {
-            ++cnt ;
-            p1 = c1 ;
-            c1 = c1 -> next ;
-        }
-        ListNode* tmp = c1 ;
-        p1 -> next = c1 -> next ;
-        c1 -> prev = nullptr ;
-        c1 -> next = nullptr ;
-        c1 -> next -> prev = p1 ;
-        delete tmp ;
+        ++cnt ;
+        t1 = t2 ;
+        t2 = t2 -> next ;
     }
+    ListNode* todelete = t2 ;
+    t1 -> next = t2 -> next ;
+    t2 ->next -> prev = t1 ;
+    delete t2 ;
 }
+
 
 int main()
 {
@@ -186,7 +182,7 @@ int main()
     head = newnode ;
     ++len ;
     printList(head);
-    
+
     int newval ;
     cout<<"Enter the value to be inserted in the beginning: ";
     cin>>newval ;
@@ -194,7 +190,7 @@ int main()
     insertAtbegin(head, 30);
     cout<<"DLL after insertion in the beginning : "<<endl ;
     printList(head);
-    
+
     cout<<"Enter the value to be inserted at the end : ";
     cin>>newval ;
     insertAtend(head, newval);
@@ -202,9 +198,9 @@ int main()
     insertAtend(head, 100);
     cout<<"DLL after insertion at the end: "<<endl ;
     printList(head);
-    
+
     cout<<"Length of the DLL is: "<<len<<endl ;
-    
+
     int post ;
     cout<<"Enter the value to be inserted : ";
     cin>>newval ;
@@ -213,21 +209,23 @@ int main()
     insertAtpost(head, newval, post);
     cout<<"Modified DLL is: "<<endl ;
     printList(head);
-    
+
     cout<<"Length of the DLL is: "<<len<<endl ;
-    
+
     deleteAtbegin(head);
     cout<<"DLL after deletion of head: "<<endl ;
     printList(head);
-    
+
     deleteAtend(head);
     cout<<"DLL after deletion at tail: "<<endl ;
     printList(head);
-    
+
     cout<<"Enter the position of the node you want to delete: ";
     cin>>post ;
     deleteAtpos(head, post);
     cout<<"DLL after deletion: "<<endl ;
     printList(head);
+    
+    
     return 0 ;
 }
