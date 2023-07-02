@@ -144,10 +144,10 @@ bool searchKey(ListNode* &head, int key)
     while(curr != nullptr)
     {
         if(curr -> value == key)
-            return "true" ;
+            return true ;
         curr = curr -> next ;
     }
-    return "false" ;
+    return false ;
 }
 
 
@@ -161,6 +161,7 @@ ListNode* reverseLL(ListNode* &head)
        newHead = head ;
        head = nextnode ;
    }
+   
    head  = newHead ;
    return head ;
 }
@@ -176,6 +177,55 @@ int midLL(ListNode* &head)
         fast = fast -> next -> next ;
     }
     return (slow -> value) ;
+}
+
+// Brute Force method to remove Nth node from the back
+/*
+ListNode* removeNthfromLast(ListNode* &head, int n)
+{
+    ListNode* dummy = head ;
+    int cnt = len - n ;
+    if(n == len)
+    {
+        ListNode* todelete = head ;
+        head = head -> next ;
+        delete todelete ;
+    }
+    else
+    {
+        int i = 0 ;
+        while(i < cnt)
+        {
+            dummy = dummy -> next ;
+            i++ ;
+        }
+        ListNode* temp = dummy -> next ;
+        dummy -> next = dummy -> next -> next ;
+        delete temp ;
+    }
+    return head ;
+}
+*/
+
+ListNode* removeNthfromLast(ListNode* &head, int n)
+{
+    ListNode* start = new ListNode() ;
+    start -> next = head ;
+    ListNode* fast = start ;
+    ListNode* slow = start ;
+    for(int i=1;i<=n;i++)
+    {
+        fast = fast -> next ;
+    }
+    while(fast -> next != nullptr)
+    {
+        fast = fast -> next ;
+        slow = slow -> next ;
+    }
+    
+    slow -> next = slow -> next -> next ;
+    
+    return start -> next ;
 }
 
 int main()
@@ -241,5 +291,13 @@ int main()
     
     
     cout<<"The middle of the LL is: "<<midLL(head)<<endl ;
+    
+    int n ;
+    cout<<"Enter the value of n: ";
+    cin>>n ;
+    
+    removeNthfromLast(head, n);
+    cout<<"LL after removing Nth node from the last : "<<endl ;
+    printList(head);
     return 0;
 }
