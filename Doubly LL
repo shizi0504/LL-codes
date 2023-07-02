@@ -173,6 +173,22 @@ void deleteAtpos(ListNode* &head, int position)
     delete t2 ;
 }
 
+ListNode* reverseDLL(ListNode* &head)
+{
+    ListNode* ptr1 = head ;
+    ListNode* ptr2 = head -> next ;
+    ptr1 -> next = ptr1 -> prev ;
+    ptr1 -> prev = ptr2 ;
+    while(ptr2 != nullptr)
+    {
+        ptr2 -> prev = ptr2 -> next ;
+        ptr2 -> next = ptr1 ;
+        ptr1 = ptr2 ;
+        ptr2 = ptr2 -> prev ;
+    }
+    head = ptr1 ;
+    return head ;
+}
 
 int main()
 {
@@ -226,6 +242,8 @@ int main()
     cout<<"DLL after deletion: "<<endl ;
     printList(head);
     
-    
+    reverseDLL(head);
+    cout<<"The reversed DLL is: "<<endl ;
+    printList(head);
     return 0 ;
 }
